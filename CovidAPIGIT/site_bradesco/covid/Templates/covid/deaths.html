@@ -1,0 +1,65 @@
+{% extends "covid/base.html" %}
+
+{% block content %}
+  <canvas id="deathChart" width="200" height="100"></canvas>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+
+window.onload = function() {
+    var ctx = document.getElementById('deathChart');
+    var semana = JSON.parse('{{ semana|safe }}');
+    var mortes = JSON.parse('{{ mortes|safe }}');
+    var vacinados = JSON.parse('{{ vacinados|safe }}');
+    var casos = JSON.parse('{{ casos|safe }}');
+    var recuperados = JSON.parse('{{ recuperados|safe }}');
+    console.log(semana , mortes);
+
+    var productsChart = new Chart(ctx,{
+        type: 'line',
+        data: {
+            labels: semana,
+            datasets: [{ 
+            data: mortes,
+            label: "Mortes",
+            borderColor: "#3e95cd",
+            fill: false
+            }, { 
+            data: vacinados,
+            label: "Vacinados",
+            borderColor: "#8e5ea2",
+            fill: false
+             }, { 
+            data: casos,
+            label: "Total casos",
+            borderColor: "#3cba9f",
+            fill: false
+            }, { 
+            data: recuperados,
+            label: "Recuperados",
+            borderColor: "#e8c3b9",
+            fill: false
+            }
+        
+        ]
+  },
+        options: {
+            title: {
+                display: true,
+                text: 'Dados Covid'
+            },
+            scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+        }
+    });
+}
+</script>
+{% endblock %}
